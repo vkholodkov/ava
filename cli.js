@@ -60,6 +60,8 @@ if (cli.flags.init) {
 	process.exit();
 }
 
+log.write();
+
 var api = new Api(cli.input, {
 	failFast: cli.flags.failFast,
 	serial: cli.flags.serial
@@ -78,15 +80,9 @@ api.on('test', function (test) {
 	}
 });
 
-api.on('rejection', function (data) {
-	log.unhandledRejections(data.file, data.rejections);
+api.on('error', function (data) {
+	log.unhandledError(data.type, data.file, data);
 });
-
-api.on('exception', function (data) {
-	log.uncaughtException(data.file, data.exception);
-});
-
-log.write();
 
 api.run()
 	.then(function () {
