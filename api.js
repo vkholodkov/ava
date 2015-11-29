@@ -9,7 +9,7 @@ var figures = require('figures');
 var assign = require('object-assign');
 var globby = require('globby');
 var chalk = require('chalk');
-var fork = require('./fork');
+var fork = require('./lib/fork');
 
 function Api(files, options) {
 	if (!(this instanceof Api)) {

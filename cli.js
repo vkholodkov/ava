@@ -22,7 +22,7 @@ var updateNotifier = require('update-notifier');
 var chalk = require('chalk');
 var Promise = require('bluebird');
 var log = require('./lib/logger');
-var Api = require('./lib/api');
+var Api = require('./api');
 
 // Bluebird specific
 Promise.longStackTraces();
