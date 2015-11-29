@@ -72,7 +72,7 @@ globals.setImmediate(function () {
 
 	runner.on('test', test);
 
-	process.on('ava-run', function (message) {
+	process.on('ava-run', function () {
 		runner.run().then(exit);
 	});
 });
