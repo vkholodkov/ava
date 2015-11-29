@@ -72,10 +72,8 @@ globals.setImmediate(function () {
 
 	runner.on('test', test);
 
-	process.on('message', function (message) {
-		if (message.name === 'ava-run') {
-			runner.run().then(exit);
-		}
+	process.on('ava-run', function (message) {
+		runner.run().then(exit);
 	});
 });
 

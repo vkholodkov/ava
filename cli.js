@@ -60,10 +60,9 @@ if (cli.flags.init) {
 	process.exit();
 }
 
-var api = new Api({
+var api = new Api(cli.input, {
 	failFast: cli.flags.failFast,
-	serial: cli.flags.serial,
-	files: cli.input
+	serial: cli.flags.serial
 });
 
 api.on('test', function (test) {
