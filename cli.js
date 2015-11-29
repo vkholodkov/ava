@@ -57,7 +57,7 @@ updateNotifier({pkg: cli.pkg}).notify();
 
 if (cli.flags.init) {
 	require('ava-init')();
-	process.exit();
+	return;
 }
 
 log.write();
@@ -98,7 +98,7 @@ api.run()
 		flushIoAndExit(api.failCount > 0 || api.rejectionCount > 0 || api.exceptionCount > 0 ? 1 : 0);
 	})
 	.catch(function (err) {
-		console.error(err.stack);
+		log.error(err.message);
 		flushIoAndExit(1);
 	});
 
