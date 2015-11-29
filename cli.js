@@ -57,50 +57,49 @@ updateNotifier({pkg: cli.pkg}).notify();
 
 if (cli.flags.init) {
 	require('ava-init')();
-	return;
-}
+} else {
+	log.write();
 
-log.write();
-
-var api = new Api(cli.input, {
-	failFast: cli.flags.failFast,
-	serial: cli.flags.serial
-});
-
-api.on('test', function (test) {
-	if (test.error) {
-		log.error(test.title, chalk.red(test.error.message));
-	} else {
-		// don't log it if there's only one file and one anonymous test
-		if (api.fileCount === 1 && api.testCount === 1 && test.title === '[anonymous]') {
-			return;
-		}
-
-		log.test(test);
-	}
-});
-
-api.on('error', function (data) {
-	log.unhandledError(data.type, data.file, data);
-});
-
-api.run()
-	.then(function () {
-		log.write();
-		log.report(api.passCount, api.failCount, api.rejectionCount, api.exceptionCount);
-		log.write();
-
-		if (api.failCount > 0) {
-			log.errors(api.tests);
-		}
-
-		process.stdout.write('');
-		flushIoAndExit(api.failCount > 0 || api.rejectionCount > 0 || api.exceptionCount > 0 ? 1 : 0);
-	})
-	.catch(function (err) {
-		log.error(err.message);
-		flushIoAndExit(1);
+	var api = new Api(cli.input, {
+		failFast: cli.flags.failFast,
+		serial: cli.flags.serial
 	});
+
+	api.on('test', function (test) {
+		if (test.error) {
+			log.error(test.title, chalk.red(test.error.message));
+		} else {
+			// don't log it if there's only one file and one anonymous test
+			if (api.fileCount === 1 && api.testCount === 1 && test.title === '[anonymous]') {
+				return;
+			}
+
+			log.test(test);
+		}
+	});
+
+	api.on('error', function (data) {
+		log.unhandledError(data.type, data.file, data);
+	});
+
+	api.run()
+		.then(function () {
+			log.write();
+			log.report(api.passCount, api.failCount, api.rejectionCount, api.exceptionCount);
+			log.write();
+
+			if (api.failCount > 0) {
+				log.errors(api.tests);
+			}
+
+			process.stdout.write('');
+			flushIoAndExit(api.failCount > 0 || api.rejectionCount > 0 || api.exceptionCount > 0 ? 1 : 0);
+		})
+		.catch(function (err) {
+			log.error(err.message);
+			flushIoAndExit(1);
+		});
+}
 
 function flushIoAndExit(code) {
 	// TODO: figure out why this needs to be here to
